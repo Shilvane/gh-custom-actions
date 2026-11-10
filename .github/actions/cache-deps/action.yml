@@ -1,0 +1,10 @@
+name : 'Get dependencies & Cache'
+description: 'Get dependencies (npm ci) and cache them in main workflow'
+runs:
+  using: 'composite'
+  steps:
+    - name: Cache dependencies
+      uses: actions/cache@v3
+    - name: install dependencies
+      run: npm ci
+      shell: bash
