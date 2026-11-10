@@ -19,10 +19,8 @@ jobs:
         steps:
             - name: Get code
               uses: actions/checkout@v3
-            - name: cache dependencies
-              uses: actions/cache@v3
-            - name: Install dependencies
-              run: npm ci
+            - name: Get & build the cache
+              uses: ./.github/actions/cache-deps/
             - name: test code
               id: run-tests
               run: npm run test
@@ -38,10 +36,8 @@ jobs:
         steps:
             - name: Get Code
               uses: actions/checkout@v3
-            - name: cache dependencies
-              uses: actions/cache@v3
-            - name: Install dependencies
-              run: npm ci
+            - name: Get & build the cache
+              uses: ./.github/actions/cache-deps/
             - name: Build website
               run: npm run build
             - name: upload artifacts
