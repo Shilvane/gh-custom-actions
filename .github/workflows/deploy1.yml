@@ -1,0 +1,66 @@
+name: Deployment Website workflow
+on:
+    push:
+        branches:
+            - master
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get Code
+              uses: actions/checkout@v3
+            - name: Cache dependencies
+              uses: actions/cache@v3
+            - name: Install dependencies
+              run: npm ci
+            - name: Lint code
+              run: npm run lint
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get code
+              uses: actions/checkout@v3
+            - name: cache dependencies
+              uses: actions/cache@v3
+            - name: Install dependencies
+              run: npm ci
+            - name: test code
+              id: run-tests
+              run: npm run test
+            - name: upload test report
+              if: failure() && steps.run-tests.outcome == 'failure'
+              uses: actions/upload-artifacts@v4
+              with:
+                name: test-report
+                path: test.json
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get Code
+              uses: actions/checkout@v3
+            - name: cache dependencies
+              uses: actions/cache@v3
+            - name: Install dependencies
+              run: npm ci
+            - name: Build website
+              run: npm run build
+            - name: upload artifacts
+              uses: actions/upload-artifacts@v4
+              with:
+                name : dist-files
+                path: dist
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: get code
+              uses: actions/checkout@v3
+            - name: Get Build artifacts
+              uses: actions/download-artifacts@v4
+              with: 
+                name: dist-files
+                path: ./dist
+            - name: Output contents
+              run: ls
+            - name: Deploy site
+              run : echo "Deploying the Site!!!!"
+            
