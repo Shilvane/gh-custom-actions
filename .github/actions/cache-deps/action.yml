@@ -1,10 +1,17 @@
 name : 'Get dependencies & Cache'
 description: 'Get dependencies (npm ci) and cache them in main workflow'
+inputs:
+  caching:
+    description: 'where the dependecies install or not' 
+    required: false
+    defualt: 'true'
 runs:
   using: 'composite'
   steps:
     - name: Cache dependencies
+      if: inputs.cahing == 'true'
       uses: actions/cache@v3
     - name: install dependencies
+      if: inputs.caching != 'true'
       run: npm ci
       shell: bash
