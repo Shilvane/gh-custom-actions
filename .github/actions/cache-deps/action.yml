@@ -20,5 +20,5 @@ runs:
       if: inputs.caching != 'true'
       run: |
         npm ci
-        echo "cache=${{ inputs.cahing }}" >> $GITHUB_OUTPUT
+        echo "cache=${{ inputs.caching }}" >> $GITHUB_OUTPUT
       shell: bash
