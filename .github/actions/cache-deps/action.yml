@@ -5,6 +5,10 @@ inputs:
     description: 'where the dependecies install or not' 
     required: false
     defualt: 'true'
+outputs:
+  used-cache:
+    description: 'where cahe used or not'
+    value: ${{steps.install.outputs.cache}}
 runs:
   using: 'composite'
   steps:
@@ -12,6 +16,9 @@ runs:
       if: inputs.cahing == 'true'
       uses: actions/cache@v3
     - name: install dependencies
+      id: install
       if: inputs.caching != 'true'
-      run: npm ci
+      run: |
+        npm ci
+        echo "cache=${{inputs.cahing}}" >> $GITHUB_OUTPUT
       shell: bash
